@@ -1,4 +1,4 @@
-article.content .content-footer .content-control-list *:not([class~=hub-btn]),
+article.content .content-footer .content-control-list>*:not([class~=hub-btn]),
 article.content .content-footer>*>*:not(.content-control-list) {
     color: var(--secondary-text-color);
 }
