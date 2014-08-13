@@ -1,0 +1,12 @@
+{
+  "name": "livefyre-theme-styler",
+  "version": "0.0.0",
+  "main": [
+    "./src/main.js"
+  ],
+  "dependencies": {
+    "requirejs-text": "~2.0.5",
+    "requirejs": "~2.1.5",
+    "cajon": "git://github.com/requirejs/cajon.git#~0.1.11"
+  }
+}
