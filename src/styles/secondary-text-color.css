@@ -1,0 +1,4 @@
+article.content .content-footer>* *,
+article.content .content-author-username {
+    color: var(--secondary-text-color);
+}
