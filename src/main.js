@@ -54,6 +54,20 @@ function getThemeCss(theme) {
     return cssStyles.join(''); 
 };
 
+ThemeStyler.getThemeOpts = function (opts) {
+    var themeOpts = {};
+
+    for (var opt in opts) {
+        if (opts.hasOwnProperty(opt)) {
+           if (Object.keys(ThemeStyler.TEMPLATE_MAP).indexOf(opt) >= 0) {
+                themeOpts[opt] = opts[opt];
+            }
+        }
+    }
+
+    return themeOpts;
+};
+
 ThemeStyler.TEMPLATE_MAP = {
     cardBackgroundColor: backgroundColorCss,
     linkColor: linkColorCss,
