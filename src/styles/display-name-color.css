@@ -1,0 +1,3 @@
+article.content a.content-author-name {
+    color: var(--anchor-color);
+}
