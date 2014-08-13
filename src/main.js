@@ -1,9 +1,8 @@
-var packageAttribute = require('livefyre-package-attribute');
-var backgroundColorCss = require('text!./styles/card-background-color.css');
-var textColorCss = require('text!./styles/text-color.css');
-var anchorColorCss = require('text!./styles/anchor-color.css');
-var displayNameColorCss = require('text!./styles/display-name-color.css');
-var usernameColorCss = require('text!./styles/username-color.css');
+var backgroundColorCss = require('text!livefyre-theme-styler/styles/card-background-color.css');
+var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
+var anchorColorCss = require('text!livefyre-theme-styler/styles/anchor-color.css');
+var displayNameColorCss = require('text!livefyre-theme-styler/styles/display-name-color.css');
+var usernameColorCss = require('text!livefyre-theme-styler/styles/username-color.css');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -11,6 +10,7 @@ var ThemeStyler = function (opts) {
     opts = opts || {};
     this._styleEl = document.createElement('style');
     HEAD_EL.appendChild(this._styleEl);
+    var packageAttribute = opts.packageAttribute || {};
     this._stylePrefix = opts.prefix || ['[',packageAttribute.attribute,'~="',packageAttribute.value,'"] '].join('');
 };
 
