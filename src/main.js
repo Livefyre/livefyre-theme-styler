@@ -1,7 +1,7 @@
 var backgroundColorCss = require('text!livefyre-theme-styler/styles/card-background-color.css');
+var linkColorCss = require('text!livefyre-theme-styler/styles/link-color.css');
 var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
-var secondaryTextColorCss = require('text!livefyre-theme-styler/styles/secondary-text-color.css');
-var anchorColorCss = require('text!livefyre-theme-styler/styles/anchor-color.css');
+var footerTextColorCss = require('text!livefyre-theme-styler/styles/footer-text-color.css');
 var displayNameColorCss = require('text!livefyre-theme-styler/styles/display-name-color.css');
 var usernameColorCss = require('text!livefyre-theme-styler/styles/username-color.css');
 
@@ -55,12 +55,12 @@ function getThemeCss(theme) {
 };
 
 ThemeStyler.TEMPLATE_MAP = {
-    'card-background-color': backgroundColorCss,
-    'link-color': anchorColorCss,
-    'text-color': textColorCss,
-    'secondary-text-color': secondaryTextColorCss,
-    'display-name-color': displayNameColorCss,
-    'username-color': usernameColorCss
+    cardBackgroundColor: backgroundColorCss,
+    linkColor: linkColorCss,
+    textColor: textColorCss,
+    footerTextColor: footerTextColorCss,
+    displayNameColor: displayNameColorCss,
+    usernameColor: usernameColorCss
 };
 
 function getStyleTemplate(themeVar) {

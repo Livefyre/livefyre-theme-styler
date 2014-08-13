@@ -1,0 +1,3 @@
+article.content .content-footer>* * {
+    color: var(--secondary-text-color);
+}
