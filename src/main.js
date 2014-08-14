@@ -17,7 +17,8 @@ var ThemeStyler = function (opts) {
 };
 
 ThemeStyler.prototype.applyTheme = function (theme) {
-    var cssText = getThemeCss(theme);
+    var themeOpts = ThemeStyler.getThemeOpts(theme);
+    var cssText = getThemeCss(themeOpts);
     var prefixedCss = prefixCss(this._stylePrefix, cssText);
     this._styleEl.innerHTML = prefixedCss;
 };
