@@ -4,6 +4,7 @@ var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
 var footerTextColorCss = require('text!livefyre-theme-styler/styles/footer-text-color.css');
 var displayNameColorCss = require('text!livefyre-theme-styler/styles/display-name-color.css');
 var usernameColorCss = require('text!livefyre-theme-styler/styles/username-color.css');
+var fontFamilyCss = require('text!livefyre-theme-styler/styles/font-family.css');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
