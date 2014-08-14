@@ -74,7 +74,8 @@ ThemeStyler.TEMPLATE_MAP = {
     textColor: textColorCss,
     footerTextColor: footerTextColorCss,
     displayNameColor: displayNameColorCss,
-    usernameColor: usernameColorCss
+    usernameColor: usernameColorCss,
+    fontFamily: fontFamilyCss
 };
 
 function getStyleTemplate(themeVar) {
