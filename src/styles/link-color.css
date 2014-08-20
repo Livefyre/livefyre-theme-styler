@@ -1,4 +1,5 @@
 article.content a,
+article.content .content-author-name a,
 article.content a.content-author-name {
     color: var(--anchor-color);
 }
