@@ -5,6 +5,7 @@ var footerTextColorCss = require('text!livefyre-theme-styler/styles/footer-text-
 var displayNameColorCss = require('text!livefyre-theme-styler/styles/display-name-color.css');
 var usernameColorCss = require('text!livefyre-theme-styler/styles/username-color.css');
 var fontFamilyCss = require('text!livefyre-theme-styler/styles/font-family.css');
+var sourceLogoColorCss = require('text!livefyre-theme-styler/styles/source-logo-color.css');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -77,7 +78,8 @@ ThemeStyler.TEMPLATE_MAP = {
     footerTextColor: footerTextColorCss,
     displayNameColor: displayNameColorCss,
     usernameColor: usernameColorCss,
-    fontFamily: fontFamilyCss
+    fontFamily: fontFamilyCss,
+    sourceLogoColor: sourceLogoColorCss
 };
 
 function getStyleTemplate(themeVar) {
