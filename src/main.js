@@ -59,13 +59,11 @@ function getThemeCss(theme) {
         theme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
         theme.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
         theme.buttonBorderColor = 'rgba(0,0,0,0.3)';
-        console.log('light', theme);
     } else if (backgroundColor.isDark()) {
         theme.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
         theme.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
         theme.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
         theme.buttonBorderColor = 'rgba(0,0,0,0.5)';
-        console.log('dark', theme);
     }
 
     for (var themeVar in theme) {
