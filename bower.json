@@ -7,6 +7,7 @@
   "dependencies": {
     "requirejs-text": "~2.0.5",
     "requirejs": "~2.1.5",
-    "cajon": "git://github.com/requirejs/cajon.git#~0.1.11"
+    "cajon": "git://github.com/requirejs/cajon.git#~0.1.11",
+    "tinycolor2": "git://github.com/bgrins/TinyColor.git#1.0.0"
   }
 }
