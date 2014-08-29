@@ -6,6 +6,11 @@ var displayNameColorCss = require('text!livefyre-theme-styler/styles/display-nam
 var usernameColorCss = require('text!livefyre-theme-styler/styles/username-color.css');
 var fontFamilyCss = require('text!livefyre-theme-styler/styles/font-family.css');
 var sourceLogoColorCss = require('text!livefyre-theme-styler/styles/source-logo-color.css');
+var buttonTextColorCss = require('text!livefyre-theme-styler/styles/button-text-color.css');
+var buttonHoverBackgroundColorCss = require('text!livefyre-theme-styler/styles/button-hover-background-color.css');
+var buttonActiveBackgroundColorCss = require('text!livefyre-theme-styler/styles/button-active-background-color.css');
+var buttonBorderColorCss = require('text!livefyre-theme-styler/styles/button-border-color.css');
+var tinycolor = require('tinycolor');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -46,6 +51,21 @@ function prefixCss(prefix, cssText) {
 function getThemeCss(theme) {
     var cssVarRegex = /var\(--[\w-]+\)/g;
     var cssStyles = [];
+
+    // Get button styles
+    var backgroundColor = tinycolor(theme.cardBackgroundColor);
+    if (backgroundColor.isLight()) {
+        theme.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
+        theme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
+        theme.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
+        theme.buttonBorderColor = 'rgba(0,0,0,0.3)';
+    } else if (backgroundColor.isDark()) {
+        theme.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
+        theme.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
+        theme.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
+        theme.buttonBorderColor = 'rgba(0,0,0,0.5)';
+    }
+
     for (var themeVar in theme) {
         if (theme.hasOwnProperty(themeVar)) {
             var val = theme[themeVar];
@@ -54,6 +74,7 @@ function getThemeCss(theme) {
             cssStyles.push(cssText);
         }
     }
+
     return cssStyles.join(''); 
 };
 
@@ -79,7 +100,11 @@ ThemeStyler.TEMPLATE_MAP = {
     displayNameColor: displayNameColorCss,
     usernameColor: usernameColorCss,
     fontFamily: fontFamilyCss,
-    sourceLogoColor: sourceLogoColorCss
+    sourceLogoColor: sourceLogoColorCss,
+    buttonTextColor: buttonTextColorCss,
+    buttonHoverBackgroundColor: buttonHoverBackgroundColorCss,
+    buttonActiveBackgroundColor: buttonActiveBackgroundColorCss,
+    buttonBorderColor: buttonBorderColorCss
 };
 
 function getStyleTemplate(themeVar) {
