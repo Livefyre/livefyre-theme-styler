@@ -1,3 +1,4 @@
+var tinycolor = require('tinycolor');
 var backgroundColorCss = require('text!livefyre-theme-styler/styles/card-background-color.css');
 var linkColorCss = require('text!livefyre-theme-styler/styles/link-color.css');
 var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
@@ -10,7 +11,10 @@ var buttonTextColorCss = require('text!livefyre-theme-styler/styles/button-text-
 var buttonHoverBackgroundColorCss = require('text!livefyre-theme-styler/styles/button-hover-background-color.css');
 var buttonActiveBackgroundColorCss = require('text!livefyre-theme-styler/styles/button-active-background-color.css');
 var buttonBorderColorCss = require('text!livefyre-theme-styler/styles/button-border-color.css');
-var tinycolor = require('tinycolor');
+var bodyFontSizeCss = require('text!livefyre-theme-styler/styles/body-font-size.css');
+var bodyLineHeightCss = require('text!livefyre-theme-styler/styles/body-line-height.css');
+var titleFontSizeCss = require('text!livefyre-theme-styler/styles/title-font-size.css');
+var titleLineHeightCss = require('text!livefyre-theme-styler/styles/title-line-height.css');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -53,19 +57,21 @@ function getThemeCss(theme) {
     var cssStyles = [];
 
     // Get button styles
+    var buttonTheme = {};
     var backgroundColor = tinycolor(theme.cardBackgroundColor);
     if (backgroundColor.isLight()) {
-        theme.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
-        theme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
-        theme.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
-        theme.buttonBorderColor = 'rgba(0,0,0,0.3)';
+        buttonTheme.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
+        buttonTheme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
+        buttonTheme.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
+        buttonTheme.buttonBorderColor = 'rgba(0,0,0,0.3)';
     } else if (backgroundColor.isDark()) {
-        theme.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
-        theme.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
-        theme.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
-        theme.buttonBorderColor = 'rgba(0,0,0,0.5)';
+        buttonTheme.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
+        buttonTheme.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
+        buttonTheme.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
+        buttonTheme.buttonBorderColor = 'rgba(0,0,0,0.5)';
     }
 
+    theme = $.extend(buttonTheme, theme);
     for (var themeVar in theme) {
         if (theme.hasOwnProperty(themeVar)) {
             var val = theme[themeVar];
@@ -104,7 +110,11 @@ ThemeStyler.TEMPLATE_MAP = {
     buttonTextColor: buttonTextColorCss,
     buttonHoverBackgroundColor: buttonHoverBackgroundColorCss,
     buttonActiveBackgroundColor: buttonActiveBackgroundColorCss,
-    buttonBorderColor: buttonBorderColorCss
+    buttonBorderColor: buttonBorderColorCss,
+    bodyFontSize: bodyFontSizeCss,
+    bodyLineHeight: bodyLineHeightCss,
+    titleFontSize: titleFontSizeCss,
+    titleLineHeight: titleLineHeightCss
 };
 
 function getStyleTemplate(themeVar) {
