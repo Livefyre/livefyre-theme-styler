@@ -1,4 +1,3 @@
-var tinycolor = require('tinycolor');
 var backgroundColorCss = require('text!livefyre-theme-styler/styles/card-background-color.css');
 var linkColorCss = require('text!livefyre-theme-styler/styles/link-color.css');
 var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
@@ -56,22 +55,6 @@ function getThemeCss(theme) {
     var cssVarRegex = /var\(--[\w-]+\)/g;
     var cssStyles = [];
 
-    // Get button styles
-    var buttonTheme = {};
-    var backgroundColor = theme.cardBackgroundColor ? tinycolor(theme.cardBackgroundColor) : tinycolor('#FFF');
-    if (backgroundColor.isLight()) {
-        buttonTheme.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
-        buttonTheme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
-        buttonTheme.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
-        buttonTheme.buttonBorderColor = 'rgba(0,0,0,0.3)';
-    } else if (backgroundColor.isDark()) {
-        buttonTheme.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
-        buttonTheme.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
-        buttonTheme.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
-        buttonTheme.buttonBorderColor = 'rgba(0,0,0,0.5)';
-    }
-
-    theme = $.extend(buttonTheme, theme);
     for (var themeVar in theme) {
         if (theme.hasOwnProperty(themeVar)) {
             var val = theme[themeVar];
