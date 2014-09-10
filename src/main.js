@@ -58,7 +58,7 @@ function getThemeCss(theme) {
 
     // Get button styles
     var buttonTheme = {};
-    var backgroundColor = tinycolor(theme.cardBackgroundColor);
+    var backgroundColor = theme.cardBackgroundColor ? tinycolor(theme.cardBackgroundColor) : tinycolor('#FFF');
     if (backgroundColor.isLight()) {
         buttonTheme.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
         buttonTheme.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();

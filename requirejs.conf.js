@@ -1,7 +1,7 @@
 require.config({
   paths: {
     text: 'lib/requirejs-text/text',
-    tinycolor: 'lib/tinycolor2/tinycolor'
+    tinycolor: 'lib/tinycolor/tinycolor'
   },
   packages: [{
     name: "livefyre-theme-styler",

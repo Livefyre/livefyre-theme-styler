@@ -1,6 +1,6 @@
 {
   "name": "livefyre-theme-styler",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": [
     "./src/main.js"
   ],
@@ -8,6 +8,6 @@
     "requirejs-text": "~2.0.5",
     "requirejs": "~2.1.5",
     "cajon": "git://github.com/requirejs/cajon.git#~0.1.11",
-    "tinycolor2": "git://github.com/bgrins/TinyColor.git#1.0.0"
+    "tinycolor": "~1.0.0"
   }
 }
