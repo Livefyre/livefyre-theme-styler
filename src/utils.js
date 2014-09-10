@@ -21,5 +21,5 @@ function interpolateButtonStyles(themeOpts) {
 }
 
 module.exports = {
-    getButtonStyles: getButtonStyles
+    interpolateButtonStyles: interpolateButtonStyles
 }
