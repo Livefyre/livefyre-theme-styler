@@ -1,3 +1,5 @@
+'use strict';
+
 var backgroundColorCss = require('text!livefyre-theme-styler/styles/card-background-color.css');
 var linkColorCss = require('text!livefyre-theme-styler/styles/link-color.css');
 var textColorCss = require('text!livefyre-theme-styler/styles/text-color.css');
@@ -14,6 +16,9 @@ var bodyFontSizeCss = require('text!livefyre-theme-styler/styles/body-font-size.
 var bodyLineHeightCss = require('text!livefyre-theme-styler/styles/body-line-height.css');
 var titleFontSizeCss = require('text!livefyre-theme-styler/styles/title-font-size.css');
 var titleLineHeightCss = require('text!livefyre-theme-styler/styles/title-line-height.css');
+var linkAttachmentTextColorCss = require('text!livefyre-theme-styler/styles/link-attachment-text-color.css');
+var linkAttachmentBackgroundColorCss = require('text!livefyre-theme-styler/styles/link-attachment-background-color.css');
+var linkAttachmentBorderColorCss = require('text!livefyre-theme-styler/styles/link-attachment-border-color.css');
 
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -97,7 +102,10 @@ ThemeStyler.TEMPLATE_MAP = {
     bodyFontSize: bodyFontSizeCss,
     bodyLineHeight: bodyLineHeightCss,
     titleFontSize: titleFontSizeCss,
-    titleLineHeight: titleLineHeightCss
+    titleLineHeight: titleLineHeightCss,
+    linkAttachmentTextColor: linkAttachmentTextColorCss,
+    linkAttachmentBackgroundColor: linkAttachmentBackgroundColorCss,
+    linkAttachmentBorderColor: linkAttachmentBorderColorCss
 };
 
 function getStyleTemplate(themeVar) {
