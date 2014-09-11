@@ -4,7 +4,7 @@ var tinycolor = require('tinycolor');
 'use strict';
 
 function interpolateButtonStyles(themeOpts) {
-    var buttonTheme = {};
+    var buttonThemeOpts = {};
     var backgroundColor = themeOpts.cardBackgroundColor ? tinycolor(themeOpts.cardBackgroundColor) : tinycolor('#FFF');
     if (backgroundColor.isLight()) {
         buttonThemeOpts.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
