@@ -24,8 +24,7 @@ var HEAD_EL = document.getElementsByTagName('head')[0];
 
 var ThemeStyler = function (opts) {
     opts = opts || {};
-    this._styleEl = document.createElement('style');
-    HEAD_EL.appendChild(this._styleEl);
+    this._styleEls = [];
     var packageAttribute = opts.packageAttribute || {};
     this._stylePrefix = opts.prefix || ['[',packageAttribute.attribute,'~="',packageAttribute.value,'"] '].join('');
 };
@@ -34,7 +33,10 @@ ThemeStyler.prototype.applyTheme = function (theme) {
     var themeOpts = ThemeStyler.getThemeOpts(theme);
     var cssText = getThemeCss(themeOpts);
     var prefixedCss = prefixCss(this._stylePrefix, cssText);
-    this._styleEl.innerHTML = prefixedCss;
+    var styleEl = document.createElement('style');
+    styleEl.innerHTML = prefixedCss;
+    HEAD_EL.appendChild(styleEl);
+    this._styleEls.push(styleEl);
 };
 
 function prefixCss(prefix, cssText) {
@@ -84,6 +86,14 @@ ThemeStyler.getThemeOpts = function (opts) {
     }
 
     return themeOpts;
+};
+
+ThemeStyler.destroy = function () {
+    for (var i=0; i < this._styleEls.length; i++) {
+        var styleEl = this._styleEls[i];
+        styleEl.parentNode.removeChild(styleEl);
+    }
+    this._styleEls = [];
 };
 
 ThemeStyler.TEMPLATE_MAP = {
