@@ -88,7 +88,7 @@ ThemeStyler.getThemeOpts = function (opts) {
     return themeOpts;
 };
 
-ThemeStyler.destroy = function () {
+ThemeStyler.prototype.destroy = function () {
     for (var i=0; i < this._styleEls.length; i++) {
         var styleEl = this._styleEls[i];
         styleEl.parentNode.removeChild(styleEl);
