@@ -38,6 +38,19 @@ function ThemeStyler(opts) {
 }
 
 /**
+ * Adds the style element to the DOM. Removes the previously added style element
+ * also, so that there is only ever 1 at a given time.
+ * @param {Element} styleEl The style element to add.
+ * @private
+ */
+ThemeStyler.prototype._addStyleToDOM = function(styleEl) {
+  var oldStyleEl = this._styleEls.pop();
+  HEAD_EL.appendChild(styleEl);
+  this._styleEls.push(styleEl);
+  oldStyleEl && HEAD_EL.removeChild(oldStyleEl);
+};
+
+/**
  * Apply a theme to the css provided in the constructor. This will take the css
  * and do all replacements based on the `theme` argument. All replacement vars
  * that were not replaced will be removed. This also injects the completed CSS
@@ -49,8 +62,7 @@ ThemeStyler.prototype.applyTheme = function(theme) {
   var prefixedCss = ThemeStyler.prefixCss(this._stylePrefix, cssText);
   var styleEl = document.createElement('style');
   styleEl.innerHTML = prefixedCss;
-  HEAD_EL.appendChild(styleEl);
-  this._styleEls.push(styleEl);
+  this._addStyleToDOM(styleEl);
 };
 
 /**

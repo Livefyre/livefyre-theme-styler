@@ -23,6 +23,36 @@ describe('ThemeStyler', function() {
     themeStyler.destroy();
   });
 
+  describe('_addStyleToDOM', function() {
+    it('should add a new element when there are none', function() {
+      var initialLen = headEl.childNodes.length;
+      var elem = document.createElement('style');
+      elem.innerHTML = '.test { color: red; }';
+      themeStyler._addStyleToDOM(elem);
+      expect(themeStyler._styleEls.length).to.equal(1);
+      expect(headEl.childNodes.length).to.equal(initialLen + 1);
+    });
+
+    it('should add a new element and remove an old one if there is one', function() {
+      var initialLen = headEl.childNodes.length;
+      var elem = document.createElement('style');
+      elem.innerHTML = '.test { color: red; }';
+      var elem2 = document.createElement('style');
+      elem2.innerHTML = '.test { color: blue; }';
+      themeStyler._addStyleToDOM(elem);
+      expect(themeStyler._styleEls.length).to.equal(1);
+      expect(headEl.childNodes.length).to.equal(initialLen + 1);
+      var lastChild = headEl.childNodes[headEl.childNodes.length-1];
+      expect(lastChild.innerHTML.indexOf('color: red;')).to.be.gt(-1);
+      themeStyler._addStyleToDOM(elem2);
+      expect(themeStyler._styleEls.length).to.equal(1);
+      expect(headEl.childNodes.length).to.equal(initialLen + 1);
+      lastChild = headEl.childNodes[headEl.childNodes.length-1];
+      expect(lastChild.innerHTML.indexOf('color: red;')).to.equal(-1);
+      expect(lastChild.innerHTML.indexOf('color: blue;')).to.be.gt(-1);
+    });
+  });
+
   describe('applyTheme', function() {
     it('should append a style element to the head', function() {
       var initialLen = headEl.childNodes.length;
@@ -39,9 +69,13 @@ describe('ThemeStyler', function() {
       themeStyler.applyTheme({});
       themeStyler.applyTheme({});
       themeStyler.applyTheme({});
-      expect(themeStyler._styleEls.length).to.equal(3);
-      expect(headEl.childNodes.length).to.equal(initialLen + 3);
+      expect(themeStyler._styleEls.length).to.equal(1);
+      expect(headEl.childNodes.length).to.equal(initialLen + 1);
       themeStyler.destroy();
+      // Should be called 3 times because `applyTheme` calls it when there is
+      // a style element already, so it happens 2x since we're calling
+      // `applyTheme` 3x. Also, we call `destroy` once, so that calls it the
+      // 3rd time.
       expect(removeChildSpy.callCount).to.equal(3);
       expect(themeStyler._styleEls.length).to.equal(0);
       expect(headEl.childNodes.length).to.equal(initialLen);
