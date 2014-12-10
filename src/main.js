@@ -45,8 +45,8 @@ function ThemeStyler(opts) {
  * @param {Object} theme Object containing key/value pairs of replacements.
  */
 ThemeStyler.prototype.applyTheme = function(theme) {
-  var cssText = getThemedCss(this._themableCss, theme);
-  var prefixedCss = prefixCss(this._stylePrefix, cssText);
+  var cssText = ThemeStyler.getThemedCss(this._themableCss, theme);
+  var prefixedCss = ThemeStyler.prefixCss(this._stylePrefix, cssText);
   var styleEl = document.createElement('style');
   styleEl.innerHTML = prefixedCss;
   HEAD_EL.appendChild(styleEl);
@@ -54,31 +54,16 @@ ThemeStyler.prototype.applyTheme = function(theme) {
 };
 
 /**
- * Prefix the CSS selectors with app/instance specific strings to differentiate
- * them from other apps/instances on the same page.
- * @param {string} prefix The prefix to add to the CSS definitions.
- * @param {string} cssText CSS string to prefix.
- * @return {string} Prefixed CSS.
+ * Remove all style elements that were appended to the head element.
  */
-function prefixCss(prefix, cssText) {
-  var match, results = [];
-  var cssPattern = new RegExp("([^\\s][\\s\\S]*?)(\\{[\\s\\S]*?\\})", "g");
-  var selectors;
-  var prefixedSelectors;
-
-  while (match = cssPattern.exec(cssText)) {
-    //There might be a concatenation of selectors, explode them
-    selectors = match[1].split(",");
-    prefixedSelectors = [];
-
-    for (var i = 0, l = selectors.length; i < l; i += 1) {
-      prefixedSelectors.push(prefix + selectors[i]);
-    }
-    results.push(prefixedSelectors.join(","), match[2]);
+ThemeStyler.prototype.destroy = function() {
+  var styleEl;
+  for (var i = 0; i < this._styleEls.length; i++) {
+    styleEl = this._styleEls[i];
+    styleEl.parentNode.removeChild(styleEl);
   }
-
-  return results.join("");
-}
+  this._styleEls = [];
+};
 
 /**
  * Get themed css. Takes raw CSS and a theme and does replacements to theme it.
@@ -86,7 +71,7 @@ function prefixCss(prefix, cssText) {
  * @param {Object} theme Object containing key/value pairs of replacements.
  * @return {string} Fully-replaced CSS string.
  */
-function getThemedCss(rawCss, theme) {
+ThemeStyler.getThemedCss = function(rawCss, theme) {
   var cssVarRegex;
   var themedCss = rawCss;
   var cssValue;
@@ -109,18 +94,38 @@ function getThemedCss(rawCss, theme) {
   // hasn't been configured yet.
   themedCss = themedCss.replace(/([^}]*var\(--\w+\);})/g, '');
   return themedCss;
-}
+};
 
 /**
- * Remove all style elements that were appended to the head element.
+ * Prefix the CSS selectors with app/instance specific strings to differentiate
+ * them from other apps/instances on the same page.
+ * @param {string} prefix The prefix to add to the CSS definitions.
+ * @param {string} cssText CSS string to prefix.
+ * @return {string} Prefixed CSS.
  */
-ThemeStyler.prototype.destroy = function() {
-  var styleEl;
-  for (var i = 0; i < this._styleEls.length; i++) {
-    styleEl = this._styleEls[i];
-    styleEl.parentNode.removeChild(styleEl);
+ThemeStyler.prefixCss = function(prefix, cssText) {
+  var match, results = [];
+  var cssPattern = new RegExp("([^\\s][\\s\\S]*?)(\\{[\\s\\S]*?\\})", "g");
+  var selector;
+  var selectors;
+  var prefixedSelectors;
+
+  while (match = cssPattern.exec(cssText)) {
+    //There might be a concatenation of selectors, explode them
+    selectors = match[1].split(",");
+    prefixedSelectors = [];
+
+    for (var i = 0, l = selectors.length; i < l; i += 1) {
+      selector = selectors[i];
+      if (!/^\s/.test(selector)) {
+        selector = ' ' + selector;
+      }
+      prefixedSelectors.push(prefix + selector);
+    }
+    results.push(prefixedSelectors.join(","), match[2]);
   }
-  this._styleEls = [];
+
+  return results.join("");
 };
 
 module.exports = ThemeStyler;

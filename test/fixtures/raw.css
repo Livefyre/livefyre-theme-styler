@@ -1,0 +1,27 @@
+.test-rule1 {
+  color: var(--testRule1);
+}
+
+.test-rule2 {
+  color: blue;
+}
+
+.test-rule3 .another-selector {
+  color: var(--testRule3);
+}
+
+.test-rule4 .something > .direct-child {
+  -webkit-box-sizing: var(--testRule4);
+     -moz-box-sizing: var(--testRule4);
+          box-sizing: var(--testRule4);
+}
+
+.test-rule5 .something + .something-else {
+  color: var(--testRule5);
+}
+
+.test-rule6 .something1,
+.test-rule6 .something2,
+.test-rule6 .something3 {
+  background: purple;
+}
