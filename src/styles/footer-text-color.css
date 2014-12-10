@@ -1,5 +1,0 @@
-article.content .content-footer .content-control-list>*:not([class~=hub-btn]),
-article.content .content-footer>*>*:not(.content-control-list),
-article.content .content-created-at a {
-    color: var(--secondary-text-color);
-}
