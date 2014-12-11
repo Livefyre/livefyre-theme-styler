@@ -97,15 +97,24 @@ describe('ThemeStyler', function() {
     it('should remove variables that were not replaced (including selector)', function() {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
         testRule1: 'red'
+        , testRule4: 'border-box'
+      });
+      expect(themedCss.indexOf('.test-rule3')).to.equal(-1);
+    });
+
+    it('should remove variables that were not replaced (selector should stay if rules exist)', function() {
+      var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
+        testRule1: 'red'
         , testRule3: 'blue'
         , testRule4: 'border-box'
       });
-      expect(themedCss.indexOf('.test-rule5')).to.equal(-1);
+      expect(themedCss.indexOf('.test-rule5')).to.be.gt(-1);
+      expect(themedCss.indexOf('.test-rule5 .something + .something-else{\n  background-color: blue;}')).to.be.gt(-1);
     });
 
     it('should work with no theme', function() {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {});
-      var expectedCss = '.test-rule2{color: blue;}.test-rule6 .something1,\n.test-rule6 .something2,\n.test-rule6 .something3{background: purple;}';
+      var expectedCss = '.test-rule2{color: blue;}.test-rule5 .something + .something-else{\n  background-color: blue;}.test-rule6 .something1,\n.test-rule6 .something2,\n.test-rule6 .something3{background: purple;}';
       expect(themedCss).to.equal(expectedCss);
     });
   });

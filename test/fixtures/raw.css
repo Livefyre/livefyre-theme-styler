@@ -18,6 +18,7 @@
 
 .test-rule5 .something + .something-else {
   color: var(--testRule5);
+  background-color: blue;
 }
 
 .test-rule6 .something1,
