@@ -27,14 +27,12 @@ function ThemeStyler(opts) {
    */
   this._styleEls = [];
 
-  var pkgAttr = opts.packageAttribute || {};
-
   /**
    * Prefix to apply to the CSS rules.
    * @type {string}
    * @private
    */
-  this._stylePrefix = opts.prefix || ['[', pkgAttr.attribute, '~="', pkgAttr.value, '"] '].join('');
+  this._stylePrefix = opts.prefix;
 }
 
 /**
