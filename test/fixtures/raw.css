@@ -26,3 +26,12 @@
 .test-rule6 .something3 {
   background: purple;
 }
+
+.test-rule7 {
+  border-color: var(--testRule7);
+  -webkit-box-shadow: 0 0 3px var(--testRule7);
+  -moz-box-shadow: 0 0 3px var(--testRule7);
+  -ms-box-shadow: 0 0 3px var(--testRule7);
+  -o-box-shadow: 0 0 3px var(--testRule7);
+  box-shadow: 0 0 3px var(--testRule7);
+}

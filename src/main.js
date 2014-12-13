@@ -102,7 +102,7 @@ ThemeStyler.getThemedCss = function(rawCss, theme) {
   // Clear out any styles that have not been replaced. This could be due to
   // the user not wanting the style to be applied or it's a new style that
   // hasn't been configured yet.
-  themedCss = themedCss.replace(/([a-zA-Z_-]+: var\(--\w+\);)/g, '');
+  themedCss = themedCss.replace(/([a-zA-Z_-]+:[^;}]*var\(--\w+\);)/g, '');
   // Clear out any rules that don't have any properties within them. This will
   // only be the case when no replacement was made and the attribute was cleaned.
   themedCss = themedCss.replace(/(\}?)([^\}]*\{[\s\\n]*\})/g, '$1');
