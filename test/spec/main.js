@@ -100,6 +100,7 @@ describe('ThemeStyler', function() {
         , testRule4: 'border-box'
       });
       expect(themedCss.indexOf('.test-rule3')).to.equal(-1);
+      expect(themedCss.indexOf('.test-rule7')).to.equal(-1);
     });
 
     it('should remove variables that were not replaced (selector should stay if rules exist)', function() {
