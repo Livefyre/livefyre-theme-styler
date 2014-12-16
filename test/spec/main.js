@@ -2,6 +2,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
 var RAW_CSS = require('text!fixtures/raw.css');
+var RAW_TRENDS = require('text!fixtures/raw_trends.css');
 var sinon = require('sinon');
 var ThemeStyler = require('livefyre-theme-styler');
 chai.use(require('sinon-chai'));
@@ -117,6 +118,12 @@ describe('ThemeStyler', function() {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {});
       var expectedCss = '.test-rule2{color: blue;}.test-rule5 .something + .something-else{\n  background-color: blue;}.test-rule6 .something1,\n.test-rule6 .something2,\n.test-rule6 .something3{background: purple;}';
       expect(themedCss).to.equal(expectedCss);
+    });
+
+    it('works with the trends css', function() {
+      var theme = {"filters":{"network":"thedailybeast.fyre.co","objectMode":true},"fontSize":"xsmall","barHeight":"12px","badgeFontSize":"18px","badgeMarginRight":"12px","badgeSize":"30px","bodyFontSize":"12px","bodyLineHeight":"18px","margin":"12px"};
+      var themedCss = ThemeStyler.getThemedCss(RAW_TRENDS, theme);
+      expect(themedCss.indexOf('.hub-metric-rank-value:before')).to.be.gt(-1);
     });
   });
 

@@ -1,0 +1,80 @@
+.hub-metric-list {
+    border-color: var(--borderColor);
+}
+
+.hub-metric-list .hub-metric {
+    background-color: var(--backgroundColor);
+    font-family: var(--fontFamily);
+    padding: var(--margin);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-rank {
+    background-color: var(--badgeColor);
+    height: var(--badgeSize);
+    width: var(--badgeSize);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-rank .hub-metric-rank-value:before {
+    color: var(--badgeTextColor);
+    font-size: var(--badgeFontSize);
+    line-height: var(--badgeSize);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-details {
+    margin-left: var(--badgeMarginRight);
+    padding-left: var(--badgeSize);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-details .hub-metric-bar-container {
+    height: var(--barHeight);
+    margin-top: var(--margin);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-details .hub-metric-bar-container .hub-metric-bar {
+    background-color: var(--barColor);
+    height: var(--barHeight);
+}
+
+.hub-metric-list .hub-metric .hub-metric-container .hub-metric-details .hub-metric-label {
+    color: var(--textColor);
+    font-size: var(--bodyFontSize);
+    line-height: var(--bodyLineHeight);
+}
+
+.hub-metric-list .hub-metric:hover {
+    border-color: var(--hoverBorderColor);
+    -webkit-box-shadow: 0 0 3px var(--hoverShadowColor);
+    -moz-box-shadow: 0 0 3px var(--hoverShadowColor);
+    -ms-box-shadow: 0 0 3px var(--hoverShadowColor);
+    -o-box-shadow: 0 0 3px var(--hoverShadowColor);
+    box-shadow: 0 0 3px var(--hoverShadowColor);
+}
+
+.hub-metric-list .hub-metric:hover .hub-metric-container .hub-metric-rank {
+    background-color: var(--barColor);
+}
+
+.hub-metric-list .hub-metric:hover .hub-metric-container .hub-metric-details .hub-metric-label {
+    color: var(--hoverTextColor);
+}
+
+
+.hub-metric-list.hub-no-graph .hub-metric {
+    min-height: var(--noGraphMinHeight);
+}
+
+.hub-metric-list.hub-no-graph .hub-metric.hub-no-graph-one-line .hub-metric-container .hub-metric-details .hub-metric-label {
+    line-height: var(--noGraphLineHeight);
+}
+
+.hub-metric-list.hub-no-graph .hub-metric .hub-metric-container .hub-metric-rank {
+    background-color: var(--barColor);
+}
+
+.hub-metric-list.hub-no-graph:hover .hub-metric .hub-metric-container .hub-metric-rank {
+    background-color: var(--badgeColor);
+}
+
+.hub-metric-list.hub-no-graph .hub-metric:hover .hub-metric-container .hub-metric-rank {
+    background-color: var(--barColor);
+}
