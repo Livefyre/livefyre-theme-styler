@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('lodash');
-var tinycolor = require('tinycolor');
+var merge = require('mout/object/merge');
+var ColorGenerator = require('./colors');
 
 function getBackgroundColorFromThemeOpts(themeOpts) {
   themeOpts = themeOpts || {};
@@ -9,35 +9,39 @@ function getBackgroundColorFromThemeOpts(themeOpts) {
 }
 
 function interpolateButtonStyles(themeOpts) {
-  var buttonThemeOpts = {};
   var backgroundColor = getBackgroundColorFromThemeOpts(themeOpts);
-  if (backgroundColor.isLight()) {
-    buttonThemeOpts.buttonTextColor = tinycolor('#000').lighten(40).toHexString();
-    buttonThemeOpts.buttonHoverBackgroundColor = backgroundColor.darken(5).toHexString();
-    buttonThemeOpts.buttonActiveBackgroundColor = backgroundColor.darken(15).toHexString();
-    buttonThemeOpts.buttonBorderColor = 'rgba(0,0,0,0.3)';
-  } else if (backgroundColor.isDark()) {
-    buttonThemeOpts.buttonTextColor = tinycolor('#FFF').darken(40).toHexString();
-    buttonThemeOpts.buttonHoverBackgroundColor = backgroundColor.lighten(5).toHexString();
-    buttonThemeOpts.buttonActiveBackgroundColor = backgroundColor.lighten(15).toHexString();
-    buttonThemeOpts.buttonBorderColor = 'rgba(0,0,0,0.5)';
-  }
-  return _.extend(buttonThemeOpts, themeOpts);
+  var buttonThemeOpts = ColorGenerator.generateColors('button', backgroundColor, {
+    light: {
+      activeBackgroundColor: {fn: 'darken', amt: 15},
+      borderColor: {color: 'rgba(0,0,0,0.3)'},
+      hoverBackgroundColor: {fn: 'darken', amt: 5},
+      textColor: {color: '#000', fn: 'lighten', amt: 40}
+    },
+    dark: {
+      activeBackgroundColor: {fn: 'lighten', amt: 15},
+      borderColor: {color: 'rgba(0,0,0,0.5)'},
+      hoverBackgroundColor: {fn: 'lighten', amt: 5},
+      textColor: {color: '#fff', fn: 'darken', amt: 40}
+    }
+  });
+  return merge(buttonThemeOpts, themeOpts);
 }
 
 function interpolateLinkAttachmentStyles(themeOpts) {
-  var linkThemeOpts = {};
   var backgroundColor = getBackgroundColorFromThemeOpts(themeOpts);
-  if (backgroundColor.isLight()) {
-    linkThemeOpts.linkAttachmentTextColor = tinycolor('#000').lighten(40).toHexString();
-    linkThemeOpts.linkAttachmentBackgroundColor = backgroundColor.darken(5).toHexString();
-    linkThemeOpts.linkAttachmentBorderColor = 'rgba(0,0,0,0.3)';
-  } else if (backgroundColor.isDark()) {
-    linkThemeOpts.linkAttachmentTextColor = tinycolor('#FFF').darken(40).toHexString();
-    linkThemeOpts.linkAttachmentBackgroundColor = backgroundColor.lighten(5).toHexString();
-    linkThemeOpts.linkAttachmentBorderColor = 'rgba(0,0,0,0.5)';
-  }
-  return _.extend(linkThemeOpts, themeOpts);
+  var linkThemeOpts = ColorGenerator.generateColors('linkAttachment', backgroundColor, {
+    light: {
+      backgroundColor: {fn: 'darken', amt: 5},
+      borderColor: {color: 'rgba(0,0,0,0.3)'},
+      textColor: {color: '#000', fn: 'lighten', amt: 40}
+    },
+    dark: {
+      backgroundColor: {fn: 'lighten', amt: 5},
+      borderColor: {color: 'rgba(0,0,0,0.5)'},
+      textColor: {color: '#fff', fn: 'darken', amt: 40}
+    }
+  });
+  return merge(linkThemeOpts, themeOpts);
 }
 
 module.exports = {
