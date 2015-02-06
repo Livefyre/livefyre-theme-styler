@@ -58,8 +58,9 @@ ThemeStyler.prototype._addStyleToDOM = function(styleEl) {
 ThemeStyler.prototype.applyTheme = function(theme) {
   var cssText = ThemeStyler.getThemedCss(this._themableCss, theme);
   var prefixedCss = ThemeStyler.prefixCss(this._stylePrefix, cssText);
+  var cleanedCss = ThemeStyler.removeHostSelector(prefixedCss);
   var styleEl = document.createElement('style');
-  styleEl.innerHTML = prefixedCss;
+  styleEl.innerHTML = cleanedCss;
   this._addStyleToDOM(styleEl);
 };
 
@@ -89,7 +90,7 @@ ThemeStyler.getThemedCss = function(rawCss, theme) {
   // Loop through all elements in the theme, doing the replacements on the CSS
   // for each one.
   for (var themeVar in theme) {
-    if (theme.hasOwnProperty(themeVar)) {
+    if (theme.hasOwnProperty(themeVar) && theme[themeVar] !== undefined) {
       cssValue = theme[themeVar];
       cssVarRegex = new RegExp('var\\(--' + themeVar + '\\)', 'g');
       themedCss = themedCss.replace(cssVarRegex, cssValue);
@@ -113,6 +114,10 @@ ThemeStyler.getThemedCss = function(rawCss, theme) {
 /**
  * Prefix the CSS selectors with app/instance specific strings to differentiate
  * them from other apps/instances on the same page.
+ * NOTE: If prefix ends in a space, all prefixed selectors will be children of
+ *       the prefix. If the prefix does not end in a space, the prefixed
+ *       selectors will be double selectors (the prefix plus the first selector
+ *       from the theme file).
  * @param {string} prefix The prefix to add to the CSS definitions.
  * @param {string} cssText CSS string to prefix.
  * @return {string} Prefixed CSS.
@@ -140,6 +145,18 @@ ThemeStyler.prefixCss = function(prefix, cssText) {
   }
 
   return results.join("");
+};
+
+/**
+ * Remove the :host selector from the CSS string. This allows the attribute
+ * selector to be the actual selector for the element that is being themed.
+ * For example, [attr=test] { } now works and doesn't require an additional
+ * selector after it.
+ * @param {string} css The CSS string to remove the :host from.
+ * @return {string} Cleaned CSS.
+ */
+ThemeStyler.removeHostSelector = function(css) {
+  return css.replace(/(\s?:host)/g, '');
 };
 
 module.exports = ThemeStyler;
