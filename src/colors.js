@@ -1,9 +1,9 @@
 'use strict';
 
-var camelCase = require('mout/string/camelCase');
-var forOwn = require('mout/object/forOwn');
-var has = require('mout/object/has');
-var tinycolor = require('tinycolor');
+var camelCase = require('mout/src/string/camelCase');
+var forOwn = require('mout/src/object/forOwn');
+var has = require('mout/src/object/has');
+var tinycolor = require('tinycolor/tinycolor');
 
 var Colors = {};
 
