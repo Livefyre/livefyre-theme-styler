@@ -54,13 +54,15 @@ ThemeStyler.prototype._addStyleToDOM = function(styleEl) {
  * that were not replaced will be removed. This also injects the completed CSS
  * into the DOM and keeps track of the element for disposal later.
  * @param {Object} theme Object containing key/value pairs of replacements.
+ * @param {string=} opt_cls Optional class to add to the style element.
  */
-ThemeStyler.prototype.applyTheme = function(theme) {
+ThemeStyler.prototype.applyTheme = function(theme, opt_cls) {
   var cssText = ThemeStyler.getThemedCss(this._themableCss, theme);
   var prefixedCss = ThemeStyler.prefixCss(this._stylePrefix, cssText);
   var cleanedCss = ThemeStyler.removeHostSelector(prefixedCss);
   var styleEl = document.createElement('style');
   styleEl.innerHTML = cleanedCss;
+  opt_cls && (styleEl.className = opt_cls);
   this._addStyleToDOM(styleEl);
 };
 
