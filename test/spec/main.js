@@ -91,8 +91,10 @@ describe('ThemeStyler', function() {
         , testRule3: 'blue'
         , testRule4: 'border-box'
         , testRule5: 'yellow'
+        , testRule8: 'none'
       });
       expect(themedCss.indexOf('var(--')).to.equal(-1);
+      expect(themedCss.indexOf('.test-rule8{background: none !important;}'));
     });
 
     it('should remove variables that were not replaced (including selector)', function() {
@@ -112,6 +114,11 @@ describe('ThemeStyler', function() {
       });
       expect(themedCss.indexOf('.test-rule5')).to.be.gt(-1);
       expect(themedCss.indexOf('.test-rule5 .something + .something-else{\n  background-color: blue;}')).to.be.gt(-1);
+    });
+
+    it('should remove variables, including important tags', function() {
+      var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {});
+      expect(themedCss.indexOf('.test-rule8')).to.equal(-1);
     });
 
     it('should work with no theme', function() {

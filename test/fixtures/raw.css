@@ -35,3 +35,7 @@
   -o-box-shadow: 0 0 3px var(--testRule7);
   box-shadow: 0 0 3px var(--testRule7);
 }
+
+.test-rule8 {
+  background: var(--testRule8) !important;
+}
