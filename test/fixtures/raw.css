@@ -39,3 +39,7 @@
 .test-rule8 {
   background: var(--testRule8) !important;
 }
+
+self {
+  border: var(--testRule9);
+}

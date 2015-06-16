@@ -127,6 +127,13 @@ describe('ThemeStyler', function() {
       expect(themedCss).to.equal(expectedCss);
     });
 
+    it('should support a `self` variable for styling the top level element', function() {
+      var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
+        testRule9: '1px solid #f00'
+      });
+      expect(themedCss.indexOf('}self{border: 1px solid #f00;}')).to.be.gt(-1);
+    });
+
     it('works with the trends css', function() {
       var theme = {"filters":{"network":"thedailybeast.fyre.co","objectMode":true},"fontSize":"xsmall","barHeight":"12px","badgeFontSize":"18px","badgeMarginRight":"12px","badgeSize":"30px","bodyFontSize":"12px","bodyLineHeight":"18px","margin":"12px"};
       var themedCss = ThemeStyler.getThemedCss(RAW_TRENDS, theme);
@@ -138,6 +145,13 @@ describe('ThemeStyler', function() {
     it('should add a prefix selector before existing selectors', function() {
       var RAW_CSS = '.one .two, .three { color: red; }';
       var EXPECTED = '.test-prefix .one .two,.test-prefix .three { color: red; }';
+      var prefixedCss = ThemeStyler.prefixCss('.test-prefix', RAW_CSS);
+      expect(prefixedCss).to.equal(EXPECTED);
+    });
+
+    it('should work with `self` values', function() {
+      var RAW_CSS = 'self { color: red; }';
+      var EXPECTED = '.test-prefix  { color: red; }';
       var prefixedCss = ThemeStyler.prefixCss('.test-prefix', RAW_CSS);
       expect(prefixedCss).to.equal(EXPECTED);
     });

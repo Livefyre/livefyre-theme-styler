@@ -146,7 +146,7 @@ ThemeStyler.prefixCss = function(prefix, cssText) {
     results.push(prefixedSelectors.join(","), match[2]);
   }
 
-  return results.join("");
+  return results.join('').replace(/(self)/g, '');
 };
 
 /**
