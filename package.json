@@ -1,7 +1,7 @@
 {
   "name": "livefyre-theme-styler",
   "description": "Set namespaced CSS styles for a given Appkit Component",
-  "main": "src/main.js"
+  "main": "src/main.js",
   "author": "Livefyre <support@livefyre.com>",
   "version": "1.4.0",
   "devDependencies": {
