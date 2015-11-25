@@ -141,7 +141,11 @@ ThemeStyler.prefixCss = function(prefix, cssText) {
       if (!/^\s/.test(selector)) {
         selector = ' ' + selector;
       }
-      prefixedSelectors.push(prefix + selector);
+      if(selector.trim().charAt(0) === '@') {
+        prefixedSelectors.push(selector);
+      } else {
+        prefixedSelectors.push(prefix + selector); 
+      }
     }
     results.push(prefixedSelectors.join(","), match[2]);
   }
