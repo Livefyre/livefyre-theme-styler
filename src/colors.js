@@ -13,7 +13,7 @@ var Colors = {};
  * @param {number} amt Amount to blacken the color.
  * @return {string} The new hex value of the color.
  */
-Colors.blacken = function(color, amt) {
+Colors.blacken = function (color, amt) {
   return tinycolor.mix(color, '#000', amt).toHexString();
 };
 
@@ -23,7 +23,7 @@ Colors.blacken = function(color, amt) {
  * @param {number} amt Amount to darken the color.
  * @return {string} The new hex value of the color.
  */
-Colors.darken = function(color, amt) {
+Colors.darken = function (color, amt) {
   return tinycolor(color).darken(amt).toString();
 };
 
@@ -36,13 +36,13 @@ Colors.darken = function(color, amt) {
  * @param {Object} opts The color configuration options.
  * @return {Object} Object containing generated colors.
  */
-Colors.generateColors = function(prefix, color, opts) {
+Colors.generateColors = function (prefix, color, opts) {
   var hasThemes = has(opts, 'light') || has(opts, 'dark');
   var isLight = tinycolor(color).isLight();
   var theme = hasThemes ? (isLight ? opts.light : opts.dark) : opts;
   var _opts = {};
 
-  forOwn(theme, function(prop, key) {
+  forOwn(theme, function (prop, key) {
     var activeColor;
     var attrName = camelCase([prefix, key].join('-'));
 
@@ -68,7 +68,7 @@ Colors.generateColors = function(prefix, color, opts) {
  * @param {number} amt Amount to lighten the color.
  * @return {string} The new hex value of the color.
  */
-Colors.lighten = function(color, amt) {
+Colors.lighten = function (color, amt) {
   return tinycolor(color).lighten(amt).toString();
 };
 

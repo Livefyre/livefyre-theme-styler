@@ -1,5 +1,7 @@
 'use strict';
 
+var isArray = require('mout/lang/isArray');
+
 /** @const {Element} */
 var HEAD_EL = document.getElementsByTagName('head')[0];
 
@@ -29,7 +31,7 @@ function ThemeStyler(opts) {
 
   /**
    * Prefix to apply to the CSS rules.
-   * @type {string}
+   * @type {Array.<string>|string}
    * @private
    */
   this._stylePrefix = opts.prefix;
@@ -41,7 +43,7 @@ function ThemeStyler(opts) {
  * @param {Element} styleEl The style element to add.
  * @private
  */
-ThemeStyler.prototype._addStyleToDOM = function(styleEl) {
+ThemeStyler.prototype._addStyleToDOM = function (styleEl) {
   var oldStyleEl = this._styleEls.pop();
   HEAD_EL.appendChild(styleEl);
   this._styleEls.push(styleEl);
@@ -56,20 +58,28 @@ ThemeStyler.prototype._addStyleToDOM = function(styleEl) {
  * @param {Object} theme Object containing key/value pairs of replacements.
  * @param {string=} opt_cls Optional class to add to the style element.
  */
-ThemeStyler.prototype.applyTheme = function(theme, opt_cls) {
-  var cssText = ThemeStyler.getThemedCss(this._themableCss, theme);
-  var prefixedCss = ThemeStyler.prefixCss(this._stylePrefix, cssText);
-  var cleanedCss = ThemeStyler.removeHostSelector(prefixedCss);
-  var styleEl = document.createElement('style');
-  styleEl.innerHTML = cleanedCss;
-  opt_cls && (styleEl.className = opt_cls);
-  this._addStyleToDOM(styleEl);
+ThemeStyler.prototype.applyTheme = function (theme, opt_cls) {
+  var cleanedCss;
+  var cssText;
+  var prefixedCss;
+  var prefixes = isArray(this._stylePrefix) ? this._stylePrefix : [this._stylePrefix];
+  var styleEl;
+
+  for (var i=0; i<prefixes.length; i++) {
+    cssText = ThemeStyler.getThemedCss(this._themableCss, theme);
+    prefixedCss = ThemeStyler.prefixCss(prefixes[i], cssText);
+    cleanedCss = ThemeStyler.removeHostSelector(prefixedCss);
+    styleEl = document.createElement('style');
+    styleEl.innerHTML = cleanedCss;
+    opt_cls && (styleEl.className = opt_cls);
+    this._addStyleToDOM(styleEl);
+  }
 };
 
 /**
  * Remove all style elements that were appended to the head element.
  */
-ThemeStyler.prototype.destroy = function() {
+ThemeStyler.prototype.destroy = function () {
   var styleEl;
   for (var i = 0; i < this._styleEls.length; i++) {
     styleEl = this._styleEls[i];
@@ -84,7 +94,7 @@ ThemeStyler.prototype.destroy = function() {
  * @param {Object} theme Object containing key/value pairs of replacements.
  * @return {string} Fully-replaced CSS string.
  */
-ThemeStyler.getThemedCss = function(rawCss, theme) {
+ThemeStyler.getThemedCss = function (rawCss, theme) {
   var cssVarRegex;
   var themedCss = rawCss;
   var cssValue;
@@ -109,8 +119,9 @@ ThemeStyler.getThemedCss = function(rawCss, theme) {
   // Clear out any rules that don't have any properties within them. This will
   // only be the case when no replacement was made and the attribute was cleaned.
   themedCss = themedCss.replace(/(\}?)([^\}]*\{[\s\\n]*\})/g, '$1');
-
-  return themedCss;
+  // If there is a closing brace before the beginning of a rule, add a newline
+  // after the brace. This solves problems with prefixing later.
+  return themedCss.replace(/\}(.)/g, '}\n$1');
 };
 
 /**
@@ -124,16 +135,17 @@ ThemeStyler.getThemedCss = function(rawCss, theme) {
  * @param {string} cssText CSS string to prefix.
  * @return {string} Prefixed CSS.
  */
-ThemeStyler.prefixCss = function(prefix, cssText) {
-  var match, results = [];
-  var cssPattern = new RegExp("([^\\s][\\s\\S]*?)(\\{[\\s\\S]*?\\})", "g");
+ThemeStyler.prefixCss = function (prefix, cssText) {
+  var cssPattern = new RegExp('([^\\s][\\s\\S]*?)(\\{[\\s\\S]*?\\})', 'g');
+  var match = cssPattern.exec(cssText);
+  var prefixedSelectors;
+  var results = [];
   var selector;
   var selectors;
-  var prefixedSelectors;
 
-  while (match = cssPattern.exec(cssText)) {
-    //There might be a concatenation of selectors, explode them
-    selectors = match[1].split(",");
+  while (match) {
+    // There might be a concatenation of selectors, explode them
+    selectors = match[1].split(',');
     prefixedSelectors = [];
 
     for (var i = 0, l = selectors.length; i < l; i += 1) {
@@ -141,13 +153,15 @@ ThemeStyler.prefixCss = function(prefix, cssText) {
       if (!/^\s/.test(selector)) {
         selector = ' ' + selector;
       }
-      if(selector.trim().charAt(0) === '@') {
+      selector = selector.replace(/^\n/, ' ');
+      if (selector.trim().charAt(0) === '@') {
         prefixedSelectors.push(selector);
       } else {
         prefixedSelectors.push(prefix + selector); 
       }
     }
-    results.push(prefixedSelectors.join(","), match[2]);
+    results.push(prefixedSelectors.join(','), match[2]);
+    match = cssPattern.exec(cssText);
   }
 
   return results.join('').replace(/(self)/g, '');
@@ -161,7 +175,7 @@ ThemeStyler.prefixCss = function(prefix, cssText) {
  * @param {string} css The CSS string to remove the :host from.
  * @return {string} Cleaned CSS.
  */
-ThemeStyler.removeHostSelector = function(css) {
+ThemeStyler.removeHostSelector = function (css) {
   return css.replace(/(\s?:host)/g, '');
 };
 

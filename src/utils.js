@@ -1,7 +1,8 @@
 'use strict';
 
-var merge = require('mout/object/merge');
 var ColorGenerator = require('./colors');
+var merge = require('mout/object/merge');
+var tinycolor = require('tinycolor');
 
 function getBackgroundColorFromThemeOpts(themeOpts) {
   themeOpts = themeOpts || {};

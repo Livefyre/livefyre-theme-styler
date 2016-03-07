@@ -1,5 +1,4 @@
 var chai = require('chai');
-var assert = chai.assert;
 var expect = chai.expect;
 var RAW_CSS = require('text!fixtures/raw.css');
 var RAW_TRENDS = require('text!fixtures/raw_trends.css');
@@ -8,24 +7,24 @@ var ThemeStyler = require('livefyre-theme-styler');
 chai.use(require('sinon-chai'));
 
 
-describe('ThemeStyler', function() {
+describe('ThemeStyler', function () {
   var headEl;
   var themeStyler;
 
-  before(function() {
+  before(function () {
     headEl = document.getElementsByTagName('head')[0];
   });
 
-  beforeEach(function() {
-    themeStyler = new ThemeStyler({ css: RAW_CSS });
+  beforeEach(function () {
+    themeStyler = new ThemeStyler({css: RAW_CSS});
   });
 
-  afterEach(function() {
+  afterEach(function () {
     themeStyler.destroy();
   });
 
-  describe('_addStyleToDOM', function() {
-    it('should add a new element when there are none', function() {
+  describe('_addStyleToDOM', function () {
+    it('should add a new element when there are none', function () {
       var initialLen = headEl.childNodes.length;
       var elem = document.createElement('style');
       elem.innerHTML = '.test { color: red; }';
@@ -34,7 +33,7 @@ describe('ThemeStyler', function() {
       expect(headEl.childNodes.length).to.equal(initialLen + 1);
     });
 
-    it('should add a new element and remove an old one if there is one', function() {
+    it('should add a new element and remove an old one if there is one', function () {
       var initialLen = headEl.childNodes.length;
       var elem = document.createElement('style');
       elem.innerHTML = '.test { color: red; }';
@@ -54,17 +53,38 @@ describe('ThemeStyler', function() {
     });
   });
 
-  describe('applyTheme', function() {
-    it('should append a style element to the head', function() {
+  describe('applyTheme', function () {
+    it('should append a style element to the head', function () {
       var initialLen = headEl.childNodes.length;
       themeStyler.applyTheme({});
       expect(themeStyler._styleEls.length).to.equal(1);
       expect(headEl.childNodes.length).to.equal(initialLen + 1);
     });
+
+    it('should support arrays', function () {
+      var spy = sinon.spy(themeStyler, '_addStyleToDOM');
+      themeStyler._stylePrefix = ['prefix1', 'prefix2'];
+      themeStyler.applyTheme(RAW_CSS, {
+        testRule1: 'red',
+        testRule3: 'blue',
+        testRule4: 'border-box',
+        testRule5: 'yellow',
+        testRule8: 'none'
+      });
+      expect(spy.callCount).to.equal(2);
+
+      var result1 = spy.getCall(0).args[0];
+      expect(result1.innerHTML).to.equal('prefix1 .test-rule2{color: blue;}prefix1 .test-rule5 .something + .something-else{\n  background-color: blue;}prefix1 .test-rule6 .something1,prefix1 .test-rule6 .something2,prefix1 .test-rule6 .something3{background: purple;}');
+
+      var result2 = spy.getCall(1).args[0];
+      expect(result2.innerHTML).to.equal('prefix2 .test-rule2{color: blue;}prefix2 .test-rule5 .something + .something-else{\n  background-color: blue;}prefix2 .test-rule6 .something1,prefix2 .test-rule6 .something2,prefix2 .test-rule6 .something3{background: purple;}');
+
+      spy.restore();
+    });
   });
 
-  describe('destroy', function() {
-    it('should remove all style elements from the head', function() {
+  describe('destroy', function () {
+    it('should remove all style elements from the head', function () {
       var initialLen = headEl.childNodes.length;
       var removeChildSpy = sinon.spy(headEl, 'removeChild');
       themeStyler.applyTheme({});
@@ -84,72 +104,85 @@ describe('ThemeStyler', function() {
     });
   });
 
-  describe('getThemedCss', function() {
-    it('should make variable replacements', function() {
+  describe('getThemedCss', function () {
+    it('should make variable replacements', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
-        testRule1: 'red'
-        , testRule3: 'blue'
-        , testRule4: 'border-box'
-        , testRule5: 'yellow'
-        , testRule8: 'none'
+        testRule1: 'red',
+        testRule3: 'blue',
+        testRule4: 'border-box',
+        testRule5: 'yellow',
+        testRule8: 'none'
       });
       expect(themedCss.indexOf('var(--')).to.equal(-1);
       expect(themedCss.indexOf('.test-rule8{background: none !important;}'));
     });
 
-    it('should remove variables that were not replaced (including selector)', function() {
+    it('should remove variables that were not replaced (including selector)', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
-        testRule1: 'red'
-        , testRule4: 'border-box'
+        testRule1: 'red',
+        testRule4: 'border-box'
       });
       expect(themedCss.indexOf('.test-rule3')).to.equal(-1);
       expect(themedCss.indexOf('.test-rule7')).to.equal(-1);
     });
 
-    it('should remove variables that were not replaced (selector should stay if rules exist)', function() {
+    it('should remove variables that were not replaced (selector should stay if rules exist)', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
-        testRule1: 'red'
-        , testRule3: 'blue'
-        , testRule4: 'border-box'
+        testRule1: 'red',
+        testRule3: 'blue',
+        testRule4: 'border-box'
       });
       expect(themedCss.indexOf('.test-rule5')).to.be.gt(-1);
       expect(themedCss.indexOf('.test-rule5 .something + .something-else{\n  background-color: blue;}')).to.be.gt(-1);
     });
 
-    it('should remove variables, including important tags', function() {
+    it('should remove variables, including important tags', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {});
       expect(themedCss.indexOf('.test-rule8')).to.equal(-1);
     });
 
-    it('should work with no theme', function() {
+    it('should work with no theme', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {});
-      var expectedCss = '.test-rule2{color: blue;}.test-rule5 .something + .something-else{\n  background-color: blue;}.test-rule6 .something1,\n.test-rule6 .something2,\n.test-rule6 .something3{background: purple;}';
+      var expectedCss = '.test-rule2{color: blue;}\n.test-rule5 .something + .something-else{\n  background-color: blue;}\n.test-rule6 .something1,\n.test-rule6 .something2,\n.test-rule6 .something3{background: purple;}';
       expect(themedCss).to.equal(expectedCss);
     });
 
-    it('should support a `self` variable for styling the top level element', function() {
+    it('should support a `self` variable for styling the top level element', function () {
       var themedCss = ThemeStyler.getThemedCss(RAW_CSS, {
         testRule9: '1px solid #f00'
       });
-      expect(themedCss.indexOf('}self{border: 1px solid #f00;}')).to.be.gt(-1);
+      expect(themedCss.indexOf('}\nself{border: 1px solid #f00;}')).to.be.gt(-1);
     });
 
-    it('works with the trends css', function() {
-      var theme = {"filters":{"network":"thedailybeast.fyre.co","objectMode":true},"fontSize":"xsmall","barHeight":"12px","badgeFontSize":"18px","badgeMarginRight":"12px","badgeSize":"30px","bodyFontSize":"12px","bodyLineHeight":"18px","margin":"12px"};
+    it('works with the trends css', function () {
+      var theme = {
+        'filters': {
+          'network': 'thedailybeast.fyre.co',
+          'objectMode': true
+        },
+        'fontSize': 'xsmall',
+        'barHeight': '12px',
+        'badgeFontSize': '18px',
+        'badgeMarginRight': '12px',
+        'badgeSize': '30px',
+        'bodyFontSize': '12px',
+        'bodyLineHeight': '18px',
+        'margin': '12px'
+      };
       var themedCss = ThemeStyler.getThemedCss(RAW_TRENDS, theme);
       expect(themedCss.indexOf('.hub-metric-rank-value:before')).to.be.gt(-1);
     });
   });
 
-  describe('prefixCss', function() {
-    it('should add a prefix selector before existing selectors', function() {
+  describe('prefixCss', function () {
+    it('should add a prefix selector before existing selectors', function () {
       var RAW_CSS = '.one .two, .three { color: red; }';
       var EXPECTED = '.test-prefix .one .two,.test-prefix .three { color: red; }';
       var prefixedCss = ThemeStyler.prefixCss('.test-prefix', RAW_CSS);
       expect(prefixedCss).to.equal(EXPECTED);
     });
 
-    it('should work with `self` values', function() {
+    it('should work with `self` values', function () {
       var RAW_CSS = 'self { color: red; }';
       var EXPECTED = '.test-prefix  { color: red; }';
       var prefixedCss = ThemeStyler.prefixCss('.test-prefix', RAW_CSS);
